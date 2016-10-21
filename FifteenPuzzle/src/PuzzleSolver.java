@@ -1,4 +1,6 @@
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class PuzzleSolver {
@@ -48,7 +50,8 @@ public class PuzzleSolver {
 		}
 
 		// iterativeDFS(puzzle, solution, rows, cols);
-		recursiveDFS(puzzle, solution, rows, cols);
+		//recursiveDFS(puzzle, solution, rows, cols);
+		BFS(puzzle, solution, rows, cols);
 	}
 
 	static private void iterativeDFS(Puzzle puzzle, Puzzle solution, int rows, int cols) {
@@ -132,6 +135,52 @@ public class PuzzleSolver {
 
 		}
 		
+
+	}
+	
+	static private void BFS(Puzzle puzzle, Puzzle solution, int rows, int cols) {
+
+		//Stack<Puzzle> stack = new Stack<Puzzle>();
+		Queue<Puzzle> queue = new LinkedList<Puzzle>();
+		queue.add(puzzle);
+
+		// visited.add(puzzle);
+		int counter = 0;
+		while (queue.size() > 0) {
+			counter++;
+			Puzzle currentNode = queue.poll();
+
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < cols; j++) {
+					System.out.print(currentNode.board[i][j]);
+				}
+				System.out.println();
+			}
+			System.out.println();
+
+			if (currentNode.equals(solution)) {
+				System.out.println("hurra");
+				break;
+			}
+
+			for (int i = 1; i <= 4; ++i) {
+				Puzzle moved = currentNode.clone(rows, cols);
+
+				if (!moved.step(i)) // Illegal
+				{
+					// System.out.println(i + " illegal");
+					// System.out.println();
+					continue;
+				}
+				if (!visited.contains(moved)) {
+					visited.add(moved);
+					queue.add(moved);
+				}
+
+			}
+
+		}
+		System.out.println("ruchy: " + counter);
 
 	}
 
